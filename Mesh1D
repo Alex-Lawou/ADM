@@ -1,1 +1,21 @@
+def Mesh1D(Length, NrOfElem, Order):
+    NrOfNodes = NrOfElem * Order + 1
+    interface = Length / 2
+    #print(interface)
+    # Generate nodes on the left and right sides
+    left = np.linspace(0, interface, int(NrOfNodes/2)+1)
+    right = np.linspace(interface, Length, int(NrOfNodes/2)+1)
 
+
+    # Concatenate nodes to get the full coordinate array
+    Coord = np.concatenate((left, right[1:]))  # Exclude the duplicate interface node
+
+    # Generate element connectivity
+    Element = np.zeros((2, NrOfElem), dtype=int)
+    Element[0, :] = np.arange(NrOfElem)
+    Element[1, :] = np.arange(NrOfElem) + 1
+
+    # Calculate the interface position
+    interface_position = Coord[int(NrOfElem * Order / 2)]
+
+    return NrOfNodes, Coord, Element, interface_position
